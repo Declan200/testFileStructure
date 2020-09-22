@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.firstName) {
+    if (!req.body.username) {
         res.status(400).send({
             message: "Content can not be empty! error in user create"
         });
@@ -15,8 +15,10 @@ exports.create = (req, res) => {
     // Create a Tutorial
     const user = {
         id: req.body.id,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        username: req.body.username
     };
 
     // Save Tutorial in the database
