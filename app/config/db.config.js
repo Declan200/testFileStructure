@@ -1,8 +1,8 @@
 module.exports = {
-    HOST: 'localhost',
+    HOST: '35.244.120.60',
     USER: 'root',
-    PASSWORD: 'Christina20000',
-    DB: 'todoapp',
+    PASSWORD: 'mhxsAHjj2E9JGpss',
+    DB: 'favour-tracking',
     dialect: 'mysql',
     pool: {
         max: 5,
