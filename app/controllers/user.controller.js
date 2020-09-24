@@ -55,15 +55,14 @@ exports.findAll = (req, res) => {
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
 
-    const user_id = req.params.user_id
-    User.findOne({
-            where: { id: user_id }
-        })
+    const id = req.params.id;
+
+    User.findByPk(id)
         .then(data => {
             res.send(data);
         })
         .catch(err => {
-            res.status(500).send(err, {
+            res.status(500).send({
                 message: "Error retrieving User with id=" + id
             });
         });
@@ -96,30 +95,43 @@ exports.update = (req, res) => {
 };
 
 // Delete a Tutorial with the specified id in the request
-exports.delete = (req, res) => {
-    const id = req.params.id;
+exports.delete = ('/users/:id', async(req, res) => {
+        const id = req.params.id
+        try {
 
-    User.destroy({
-            where: { id: id }
-        })
-        .then(num => {
-            if (num == 1) {
-                res.send({
-                    message: "User was deleted successfully!"
-                });
-            } else {
-                res.send({
-                    message: `
-                    Cannot delete User with id = $ { id }.Maybe User was not found! `
-                });
+            const user = await User.destroy({ where: { id: id } })
+            if (!user) {
+                return res.sendStatus(404)
             }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Could not delete User with id=" + id
-            });
-        });
-};
+            res.send('User successfully deleted')
+        } catch (e) {
+            res.status(500).send('Could not delete the user with id:' + id)
+        }
+    })
+    // exports.delete = (req, res) => {
+    //     const id = req.params.id;
+
+//     User.destroy({
+//             where: { id: id }
+//         })
+//         .then(num => {
+//             if (num == 1) {
+//                 res.send({
+//                     message: "User was deleted successfully!"
+//                 });
+//             } else {
+//                 res.send({
+//                     message: `
+//                     Cannot delete User with id = $ { id }.Maybe User was not found! `
+//                 });
+//             }
+//         })
+//         .catch(err => {
+//             res.status(500).send({
+//                 message: "Could not delete User with id=" + id
+//             });
+//         });
+// };
 
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
