@@ -2,7 +2,7 @@ const uuid = require('uuid')
 module.exports = (sequelize, Sequelize) => {
     const User = sequelize.define('user', {
 
-        user_id: {
+        id: {
             primaryKey: true,
             type: Sequelize.UUIDV1(36),
         },
@@ -22,6 +22,10 @@ module.exports = (sequelize, Sequelize) => {
         email: {
             type: Sequelize.STRING(35),
             allowNull: false,
+        },
+        password: {
+            type: Sequelize.STRING(35),
+            allowNull: false
         }
         // password: {
         //     Type: Sequelize.STRING(35),

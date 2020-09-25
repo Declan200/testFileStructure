@@ -12,16 +12,17 @@ exports.create = (req, res) => {
         return;
     }
 
-    // Create a Tutorial
+    // Create a User
     const user = {
         id: req.body.id,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         email: req.body.email,
-        username: req.body.username
+        username: req.body.username,
+        password: req.body.password
     };
 
-    // Save Tutorial in the database
+    // Save User in the database
     User.create(user)
         .then(data => {
             res.send(data);
@@ -32,7 +33,7 @@ exports.create = (req, res) => {
             });
         });
 };
-// Retrieve all Tutorials from the database.
+// Retrieve all User from the database.
 exports.findAll = (req, res) => {
     const user_id = req.query.user_id;
     var condition = user_id ? {
@@ -52,7 +53,7 @@ exports.findAll = (req, res) => {
         });
 };
 
-// Find a single Tutorial with an id
+// Find a single User with an id
 exports.findOne = (req, res) => {
 
     const id = req.params.id;
@@ -62,13 +63,15 @@ exports.findOne = (req, res) => {
             res.send(data);
         })
         .catch(err => {
-            res.status(500).send({
+            res.status(500).send(err, {
                 message: "Error retrieving User with id=" + id
             });
         });
 };
 
-// Update a Tutorial by the id in the request
+
+
+// Update a User by the id in the request
 exports.update = (req, res) => {
     const id = req.params.id;
 
@@ -83,12 +86,12 @@ exports.update = (req, res) => {
             } else {
                 res.send({
                     message: `
-                    Cannot update User with id = $ { id }.Maybe Tutorial was not found or req.body is empty! `
+                    Cannot update User with id = ${ id }.Maybe Tutorial was not found or req.body is empty! `
                 });
             }
         })
         .catch(err => {
-            res.status(500).send({
+            res.status(500).send(err, {
                 message: "Error updating User with id=" + id
             });
         });
@@ -101,11 +104,11 @@ exports.delete = ('/users/:id', async(req, res) => {
 
             const user = await User.destroy({ where: { id: id } })
             if (!user) {
-                return res.sendStatus(404)
+                return res.status(404).send()
             }
             res.send('User successfully deleted')
         } catch (e) {
-            res.status(500).send('Could not delete the user with id:' + id)
+            res.status(500).send('Could not delete the user with id: ' + id)
         }
     })
     // exports.delete = (req, res) => {
@@ -121,13 +124,12 @@ exports.delete = ('/users/:id', async(req, res) => {
 //                 });
 //             } else {
 //                 res.send({
-//                     message: `
-//                     Cannot delete User with id = $ { id }.Maybe User was not found! `
+//                     message: `Cannot delete User with id = ${ id }.Maybe User was not found! `
 //                 });
 //             }
 //         })
 //         .catch(err => {
-//             res.status(500).send({
+//             res.status(500).send(err, {
 //                 message: "Could not delete User with id=" + id
 //             });
 //         });
